@@ -1,0 +1,33 @@
+Progetto: Registro Presenze Digitale - Confcommercio Taranto
+Relazione Tecnica Configurazione Database (Gruppo A)
+1. Riepilogo dell'Attività
+L'obiettivo è stato quello di creare un database relazionale su Supabase (PostgreSQL) solido e sicuro per la gestione delle presenze, eliminando ogni traccia di tabelle di test precedenti e allineando la struttura ai requisiti della Regione Puglia.
+
+2. Struttura del Database (Schema)
+Abbiamo creato 5 tabelle fondamentali collegate tra loro:
+
+utenti: Gestisce l'anagrafica. Abbiamo rimosso i vecchi campi errati ("abito", "quadrato") e impostato i campi corretti: id, nome, cognome, email, ruolo (admin, docente, corsista).
+
+corsi: Contiene l'elenco dei percorsi formativi con i relativi codici progetto (necessari per il finanziamento FSE+).
+
+lezioni: Calendario delle attività collegate ai corsi.
+
+impostazioni_sistema: Tabella tecnica per gestire i parametri di sicurezza. Qui abbiamo inserito la chiave ip_sede_taranto con valore 127.0.0.1.
+
+presenze: Tabella di log dove vengono registrate le firme con l'indirizzo IP di chi firma e l'orario certificato (now()).
+
+3. Logica di Sicurezza (Il "Vigile Elettronico")
+Il cuore del lavoro per il Gruppo A è stato l'implementazione della sicurezza lato server per impedire firme fraudolente (es. da casa). Abbiamo creato:
+
+Funzione check_ip_sede(): Una procedura SQL che, prima di salvare una firma, verifica se l'IP del corsista corrisponde a quello salvato nella tabella impostazioni.
+
+Trigger trigger_check_ip_presenza: Un automatismo che attiva il controllo istantaneamente su ogni tentativo di firma. Se l'IP non è quello della sede, il sistema restituisce un errore rosso e blocca l'operazione.
+
+4. Stato Finale e Test
+Pulizia: Tutte le tabelle inutili (pompe, suoni, giornate) sono state eliminate con successo tramite comandi DROP CASCADE.
+
+Dati Inseriti: Abbiamo popolato il sistema con un utente di test (Mario Rossi), un corso di prova e una lezione collegata.
+
+Esito: Il database è ora pronto per essere collegato all'interfaccia web (Frontend).
+
+Nota Tecnica: Il sistema è ora configurato per accettare firme solo dall'indirizzo IP 127.0.0.1. Per la messa in produzione, basterà aggiornare questo valore con l'IP statico della sede di Confcommercio Taranto nella tabella impostazioni_sistema.
