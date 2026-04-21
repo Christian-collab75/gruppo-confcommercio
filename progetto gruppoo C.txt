@@ -1,0 +1,214 @@
+# Workstream C — Area Corsisti & Materiali Didattici
+
+## Documento Ufficiale + Supporto Presentazione
+
+---
+
+## 🎯 Obiettivo
+
+Il Workstream C ha l’obiettivo di progettare e sviluppare l’area riservata della piattaforma dedicata alla gestione dei materiali didattici.
+
+In particolare:
+
+* i docenti devono poter caricare contenuti didattici
+* i corsisti devono poter accedere e scaricare i materiali relativi ai propri corsi
+* il sistema deve tracciare ogni accesso e attività
+
+---
+
+## 📦 Deliverable
+
+### 1. Area corsista autenticata
+
+* Accesso tramite autenticazione (gestita dal team Fondamenta)
+* Accesso limitato ai corsi di appartenenza
+* Visualizzazione lezioni e materiali associati
+* Protezione tramite Row Level Security (RLS)
+
+### 2. Upload materiali lato docente
+
+* Interfaccia con drag & drop
+* Formati supportati: PDF, PPT, DOCX, immagini, ZIP
+* Dimensione massima: 50MB
+* Upload su Supabase Storage (bucket privato)
+* Associazione materiale → lezione
+
+### 3. Diario lezioni svolte
+
+Per ogni lezione:
+
+* Argomenti trattati
+* Materiali disponibili
+* Elenco presenze
+
+Implementazione tramite vista SQL aggregata.
+
+### 4. Log accessi materiali
+
+Tracciamento completo dei download:
+
+* corsista_id
+* materiale_id
+* timestamp
+
+---
+
+## 🧠 Architettura Dati
+
+### Tabelle Workstream C
+
+* materiali
+* accessi_materiali
+
+### Tabelle esterne
+
+* utenti (Fondamenta)
+* corsi (Workstream B)
+* lezioni (Workstream B)
+* iscrizioni (Fondamenta)
+* presenze (Workstream A)
+
+---
+
+## 🔐 Sicurezza
+
+### Row Level Security (RLS)
+
+* Accesso limitato per corsisti ai propri corsi
+* Accesso docenti limitato alle proprie lezioni
+* Controllo tramite relazioni tra utenti, iscrizioni, corsi e lezioni
+
+### Storage Sicuro
+
+* Bucket privato
+* Download tramite API protetta
+* Signed URL temporanei
+* Logging automatico accessi
+
+---
+
+## ⚙️ Backend (Next.js)
+
+Endpoint:
+
+* GET/POST /api/materiali
+* DELETE /api/materiali/[id]
+* GET /api/materiali/[id]/download
+* GET /api/diario
+
+---
+
+## 🧩 Frontend
+
+Componenti:
+
+* UploadMateriale
+* ListaMateriali
+* DiarioLezioni
+
+---
+
+## 🧪 Definition of Done
+
+* Tutti i materiali caricabili e scaricabili
+* Isolamento completo tra corsisti
+
+---
+
+## 🔗 Dipendenze
+
+### Gruppo A
+
+Richiesta struttura presenze:
+
+* lezione_id
+* corsista_id
+* presente
+* firmato_at
+
+### Gruppo B
+
+Campi necessari:
+
+* lezione.corso_id
+* lezione.docente_id
+* corso.mesi_accesso_materiali
+
+### Fondamenta
+
+* utenti.ruolo = admin | docente | corsista
+
+---
+
+## 📅 Pianificazione
+
+* W1 → progettazione
+* W2–W4 → sviluppo
+* W5 → integrazione
+* W6 → demo
+
+---
+
+## ⚠️ Attività Aperte
+
+* Allineamento con altri team
+* Verifica campi critici
+* Test integrazione
+
+---
+
+# 📊 Diagrammi
+
+## ERD (semplificato)
+
+Utenti → Iscrizioni → Corsi → Lezioni → Materiali → Accessi
+
+## Flusso Download
+
+1. Utente autenticato richiede download
+2. API verifica iscrizione
+3. Genera signed URL
+4. Registra accesso
+5. Restituisce file
+
+---
+
+# 🎤 Versione per Presentazione (Slide)
+
+## Slide 1 — Obiettivo
+
+Piattaforma per gestione materiali didattici con accesso controllato.
+
+## Slide 2 — Funzionalità
+
+* Upload docenti
+* Area corsisti
+* Diario lezioni
+* Tracking accessi
+
+## Slide 3 — Architettura
+
+* Supabase (DB + Storage)
+* Next.js (API + UI)
+* RLS per sicurezza
+
+## Slide 4 — Sicurezza
+
+* Bucket privato
+* Signed URL
+* RLS
+
+## Slide 5 — Risultato
+
+Sistema sicuro, scalabile e pronto per integrazione.
+
+---
+
+# 📄 Nota Finale
+
+Il sistema è completo dal punto di vista tecnico.
+Il successo finale dipende dall’integrazione con gli altri Workstream.
+
+---
+
+(Documento pronto per esportazione in PDF e utilizzo in presentazione)
