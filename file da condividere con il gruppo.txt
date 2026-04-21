@@ -1,0 +1,19 @@
+Ciao Gruppo A,
+
+Siamo il Gruppo C (Materiali). Abbiamo bisogno di allinearci su un punto prima che iniziate lo sviluppo della tabella presenze, perché la leggiamo direttamente per popolare il "Diario lezioni svolte" nell'area corsista.
+
+Ci serve che la vostra tabella `presenze` abbia esattamente questi campi:
+
+• `lezione_id` (uuid, FK → lezioni.id)
+• `corsista_id` (uuid, FK → utenti.id)
+• `presente` (boolean)
+• `firmato_at` (timestamptz)
+
+Noi leggeremo questa tabella in sola lettura tramite la vista `diario_lezioni` che abbiamo già creato. Non ci serve nient'altro — non modificheremo mai la vostra tabella.
+
+Una cosa importante: nella nostra RLS policy la verifica dell'iscrizione al corso usa la join `presenze → lezioni → corsi`. Se cambiate il nome dei campi o la struttura della FK, la nostra vista si rompe.
+
+Potete confermarci che questi nomi di campo sono compatibili con quello che state progettando? Se avete già uno schema diverso fatemelo sapere il prima possibile (idealmente entro fine W1) così ci allineamo.
+
+Grazie,
+Gruppo C
