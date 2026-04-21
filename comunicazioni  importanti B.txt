@@ -1,0 +1,18 @@
+Ciao Gruppo B,
+
+Siamo il Gruppo C (Materiali). Dobbiamo allinearci sulla struttura degli oggetti `corso` e `lezione` perché i nostri materiali vengono associati direttamente alle lezioni che create voi.
+
+Ci servono conferme su questi tre punti:
+
+1. L'oggetto `lezione` ha un campo `corso_id` (uuid FK) che punta alla tabella `corsi`?
+2. L'oggetto `lezione` ha un campo `docente_id` (uuid FK) che punta alla tabella `utenti`?
+3. L'oggetto `corso` ha un campo `mesi_accesso_materiali` (integer, nullable) che indica per quanti mesi i corsisti possono accedere ai materiali dopo il caricamento?
+
+Il punto 3 è critico per noi: usiamo quel valore per calcolare automaticamente la scadenza di ogni file caricato. Se non è nel vostro schema, dobbiamo concordare dove metterlo (potremmo aggiungerlo noi alla tabella `corsi` in accordo con le Fondamenta).
+
+Inoltre, quando create una nuova lezione nel calendario, potreste notificarci (anche solo via chat di gruppo) con il suo `lezione_id`? Ci facilita i test di integrazione in W5.
+
+Confermateci appena potete, idealmente entro fine W1.
+
+Grazie,
+Gruppo C
